@@ -39,7 +39,9 @@ class ProductsController extends Controller
     public function store(Request $request)
     {
         //
-        return Product::create($request->all());
+        $data = $request->all();
+        $data['user_id'] = \Auth::user()->id;
+        return Product::create($data);
     }
 
     /**
@@ -90,6 +92,7 @@ class ProductsController extends Controller
     public function destroy(Product $product)
     {
         //
+        $this->authorize('delete', $product);
         $product->delete();
         return $product;
     }
